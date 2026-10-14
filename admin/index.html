@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Dashboard — Aidil Portfolio</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body class="admin">
+
+  <div class="admin-loader" id="loader">Memuat dashboard...</div>
+
+  <!-- ================= FATAL / SETUP ================= -->
+  <div class="fatal" id="fatal" hidden>
+    <h1>Firebase belum siap</h1>
+    <p id="fatalText"></p>
+    <code>js/site-config.js</code>
+    <p style="margin-top:18px">
+      <a class="btn btn-outline btn-sm" href="login.html">Ke halaman login</a>
+    </p>
+  </div>
+
+
+  <!-- ================= SHELL ================= -->
+  <div class="admin-shell" id="shell" hidden>
+
+    <aside class="sidebar">
+      <div class="side-brand">AIDIL <span>ADMIN</span></div>
+
+      <nav class="side-nav">
+        <a href="#/dashboard" data-route="dashboard">Dashboard</a>
+        <a href="#/projects" data-route="projects">Projects</a>
+        <a href="#/skills" data-route="skills">Skills</a>
+        <a href="#/certifications" data-route="certifications">Sertifikasi</a>
+        <a href="#/settings" data-route="settings">Settings</a>
+      </nav>
+
+      <div class="side-foot">
+        <a href="../index.html" target="_blank" rel="noopener">Lihat Website &#8599;</a>
+        <button type="button" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+
+      <header class="admin-top">
+        <h1 id="viewTitle">Dashboard</h1>
+        <div class="admin-user">
+          <span id="adminEmail"></span>
+          <span class="pill pill-warn" id="storagePill" hidden>Storage nonaktif</span>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <!-- ========== PERINGATAN ========== -->
+        <div class="alert alert-error" id="rulesAlert" hidden>
+          <strong>Akses database ditolak.</strong>
+          Security rules belum benar. Buka Firebase Console &rarr;
+          <strong>Firestore Database &rarr; Rules</strong>, tempel isi file
+          <code>firestore.rules</code>, lalu klik <strong>Publish</strong>.
+          <p class="hint">
+            Email di rules harus sama persis dengan
+            <code id="alertEmail">-</code>
+          </p>
+        </div>
+
+        <!-- ========== DASHBOARD ========== -->
+        <section class="view" id="view-dashboard">
+
+          <div class="stat-grid">
+            <div class="stat-card"><span>Total Projects</span><strong id="statTotal">0</strong></div>
+            <div class="stat-card"><span>Published</span><strong id="statPublished">0</strong></div>
+            <div class="stat-card"><span>Draft</span><strong id="statDraft">0</strong></div>
+            <div class="stat-card"><span>Featured</span><strong id="statFeatured">0</strong></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Project terbaru</h2>
+              <a class="btn btn-outline btn-sm" href="#/projects">Kelola projects</a>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Project</th><th>Category</th><th>Status</th><th>Diperbarui</th></tr>
+                </thead>
+                <tbody id="recentBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Cara pakai</h2>
+            <ol class="hint" style="line-height:1.9">
+              <li>Tambah project baru di menu <strong>Projects</strong> &rarr; klik tombol <strong>&#10133;</strong> di kanan atas (Arahkan kursor ke ikon untuk melihat namanya).</li>
+              <li>Simpan sebagai <strong>Draft</strong> dulu untuk mengecek tampilan, lalu ubah jadi <strong>Published</strong>.</li>
+              <li>Ganti daftar skills di menu <strong>Skills</strong>.</li>
+              <li>Tambah sertifikat beserta link verifikasinya di menu <strong>Sertifikasi</strong>.</li>
+              <li>Perbarui data diri, email, dan link GitHub/LinkedIn di menu <strong>Settings</strong>.</li>
+            </ol>
+          </div>
+
+        </section>
+
+
+        <!-- ========== PROJECTS ========== -->
+        <section class="view" id="view-projects">
+
+          <!-- FORM (create / edit) -->
+          <div class="panel" id="editorPanel" hidden>
+            <div class="panel-head">
+              <h2 id="editorTitle">Add Project</h2>
+              <a class="btn btn-outline btn-sm" href="#/projects">Tutup</a>
+            </div>
+
+            <form id="projectForm" novalidate>
+              <input type="hidden" id="p-id">
+
+              <div class="form-grid">
+
+                <div class="field">
+                  <label for="p-title">Project Title *</label>
+                  <input type="text" id="p-title" placeholder="Contoh: Arduino UNO Q Mecanum AGV" required>
+                </div>
+
+                <div class="field">
+                  <label for="p-slug">Slug (URL)</label>
+                  <input type="text" id="p-slug" placeholder="arduino-agv">
+                  <small>index.html#project/arduino-agv — dibuat otomatis dari judul.</small>
+                </div>
+
+                <div class="field full">
+                  <label for="p-short">Short Description</label>
+                  <input type="text" id="p-short" placeholder="1 kalimat yang tampil di card project">
+                </div>
+
+                <div class="field full">
+                  <label for="p-description">Description</label>
+                  <textarea id="p-description" placeholder="Penjelasan lengkap project. Pisahkan paragraf dengan baris kosong."></textarea>
+                </div>
+
+                <div class="field">
+                  <label for="p-category">Category *</label>
+                  <input type="text" id="p-category" list="categoryList" placeholder="Embedded" required>
+                  <datalist id="categoryList">
+                    <option>IoT</option><option>Embedded</option><option>Electrical</option>
+                    <option>Web</option><option>AI</option><option>Automation</option>
+                    <option>Robotics</option>
+                  </datalist>
+                </div>
+
+                <div class="field">
+                  <label for="p-year">Year</label>
+                  <input type="text" id="p-year" placeholder="2026">
+                </div>
+
+                <div class="field">
+                  <label for="p-role">Role</label>
+                  <input type="text" id="p-role" placeholder="Firmware Engineer">
+                </div>
+
+                <div class="field">
+                  <label for="p-technologies">Technologies</label>
+                  <input type="text" id="p-technologies" placeholder="Arduino, C++, PID">
+                  <small>Pisahkan dengan koma.</small>
+                </div>
+
+                <div class="field">
+                  <label for="p-hardware">Hardware</label>
+                  <input type="text" id="p-hardware" placeholder="Arduino UNO Q, L298N, Motor DC">
+                  <small>Pisahkan dengan koma.</small>
+                </div>
+
+                <div class="field">
+                  <label for="p-software">Software</label>
+                  <input type="text" id="p-software" placeholder="Arduino IDE, Fritzing, Python">
+                  <small>Software yang dipakai untuk membuat project ini. Pisahkan dengan koma.</small>
+                </div>
+
+                <div class="field full">
+                  <label for="p-features">Features</label>
+                  <textarea id="p-features" placeholder="Satu fitur per baris"></textarea>
+                </div>
+
+                <div class="field full">
+                  <label>Cover Image</label>
+                  <p class="hint" id="storageHint" hidden>
+                    <strong>Upload file tidak aktif</strong> karena Firebase Storage belum
+                    dibuka (butuh plan Blaze). Tetap bisa memakai kolom URL di bawah.
+                  </p>
+                  <div class="cover-preview">
+                    <div class="cover-thumb" id="coverThumb">Kosong</div>
+                    <div style="flex:1">
+                      <input type="text" id="p-cover-url"
+                             placeholder="https://... atau assets/img/projects/agv.jpg">
+                      <small>
+                        Tempel URL gambar, atau path gambar di repository GitHub
+                        (contoh: <code>assets/img/projects/agv.jpg</code>).
+                        Cara ini gratis dan tidak butuh Firebase Storage.
+                      </small>
+                      <input type="file" id="p-cover-file" accept="image/*" style="margin-top:8px">
+                      <small>Upload file hanya bisa kalau Firebase Storage sudah aktif. Maks 5 MB.</small>
+                      <div class="btn-row" style="margin-top:8px">
+                        <button type="button" class="btn btn-danger btn-sm btn-ico-only" id="removeCoverBtn"
+                                title="Hapus Cover" hidden><span class="btn-ico" aria-hidden="true">&#128465;</span><span class="sr-only">Hapus Cover</span></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field full">
+                  <label for="p-gallery-url">Gallery</label>
+                  <textarea id="p-gallery-url" style="min-height:80px"
+                            placeholder="https://... (satu URL per baris)"></textarea>
+                  <small>
+                    Satu URL (atau path gambar di repository) per baris.
+                    Hapus baris untuk menghapus foto.
+                  </small>
+                  <input type="file" id="p-gallery-file" accept="image/*" multiple style="margin-top:8px">
+                  <div class="thumb-list" id="galleryList"></div>
+                </div>
+
+                <div class="field full">
+                  <label>Links</label>
+                  <div class="link-rows" id="linkRows"></div>
+                  <button type="button" class="btn btn-outline btn-sm btn-ico-only" id="addLinkBtn"
+                          title="Tambah Link" style="margin-top:10px"><span class="btn-ico" aria-hidden="true">&#10133;</span><span class="sr-only">Tambah Link</span></button>
+                </div>
+
+                <div class="field">
+                  <label>Status</label>
+                  <div class="switch-group">
+                    <input type="radio" name="p-status" id="p-status-draft" value="draft" checked>
+                    <label for="p-status-draft">Draft</label>
+                    <input type="radio" name="p-status" id="p-status-published" value="published">
+                    <label for="p-status-published">Published</label>
+                  </div>
+                  <small>Draft tidak tampil di website publik.</small>
+                </div>
+
+                <div class="field">
+                  <label>Featured</label>
+                  <label class="checkbox">
+                    <input type="checkbox" id="p-featured">
+                    Tampilkan di Featured Project pada halaman home
+                  </label>
+                </div>
+
+              </div>
+
+              <div class="btn-row" style="margin-top:24px">
+                <button type="submit" class="btn btn-primary btn-ico-only" id="saveBtn" title="Simpan Project"><span class="btn-ico" aria-hidden="true">&#128190;</span><span class="sr-only">Simpan Project</span></button>
+                <a class="btn btn-outline" href="#/projects">Batal</a>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- DAFTAR -->
+          <div class="panel" id="projectListPanel">
+            <div class="panel-head">
+              <h2>Daftar Project</h2>
+              <div class="btn-row">
+                <a class="btn btn-outline btn-sm" href="../index.html#projects" target="_blank" rel="noopener">Lihat halaman publik</a>
+                <a class="btn btn-primary btn-sm btn-ico-only" href="#/projects/new" title="Tambah Project"><span class="btn-ico" aria-hidden="true">&#10133;</span><span class="sr-only">Tambah Project</span></a>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Project</th><th>Category</th><th>Status</th>
+                    <th>Featured</th><th>Diperbarui</th>
+                    <th>Urutan</th><th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="projectBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- ========== SKILLS ========== -->
+        <section class="view" id="view-skills">
+
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Daftar Skills</h2>
+              <div class="btn-row">
+                <button type="button" class="btn btn-outline btn-sm" id="seedSkillsBtn">Isi 4 skill awal</button>
+                <button type="button" class="btn btn-primary btn-sm btn-ico-only" id="addSkillBtn" title="Tambah Skill"><span class="btn-ico" aria-hidden="true">&#10133;</span><span class="sr-only">Tambah Skill</span></button>
+              </div>
+            </div>
+            <div id="skillList"></div>
+          </div>
+
+          <div class="panel" id="skillFormPanel" hidden>
+            <div class="panel-head">
+              <h2 id="skillFormTitle">Add Skill</h2>
+            </div>
+
+            <form id="skillForm" novalidate>
+              <input type="hidden" id="s-id">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="s-icon">Icon</label>
+                  <input type="text" id="s-icon" class="icon-input" placeholder="⚡">
+                  <small>Satu simbol, misalnya ⚡ ◉ ⌘ &lt;/&gt; ◆</small>
+                </div>
+                <div class="field">
+                  <label for="s-name">Nama *</label>
+                  <input type="text" id="s-name" placeholder="Electrical" required>
+                </div>
+                <div class="field full">
+                  <label for="s-description">Deskripsi</label>
+                  <textarea id="s-description" placeholder="Ringkasan singkat skill ini"></textarea>
+                </div>
+              </div>
+              <div class="btn-row" style="margin-top:20px">
+                <button type="submit" class="btn btn-primary btn-ico-only" id="saveSkillBtn" title="Simpan Skill"><span class="btn-ico" aria-hidden="true">&#128190;</span><span class="sr-only">Simpan Skill</span></button>
+                <button type="button" class="btn btn-outline" id="cancelSkillBtn">Batal</button>
+              </div>
+            </form>
+          </div>
+
+        </section>
+
+
+        <!-- ========== SERTIFIKASI ========== -->
+        <section class="view" id="view-certifications">
+
+          <div class="panel" id="certEditorPanel" hidden>
+            <div class="panel-head">
+              <h2 id="certEditorTitle">Add Sertifikat</h2>
+              <a class="btn btn-outline btn-sm" href="#/certifications">Tutup</a>
+            </div>
+
+            <form id="certForm" novalidate>
+              <input type="hidden" id="c-cert-id">
+
+              <div class="form-grid">
+
+                <div class="field full">
+                  <label for="cert-title">Nama Sertifikat *</label>
+                  <input type="text" id="cert-title" placeholder="Contoh: Unleashing the Power of AI Agents" required>
+                </div>
+
+                <div class="field">
+                  <label for="cert-issuer">Penerbit</label>
+                  <input type="text" id="cert-issuer" list="issuerList" placeholder="IBM SkillsBuild">
+                  <datalist id="issuerList">
+                    <option>IBM SkillsBuild</option><option>Google</option>
+                    <option>Microsoft</option><option>Udemy</option>
+                    <option>Dikti</option><option>BNSP</option>
+                  </datalist>
+                </div>
+
+                <div class="field">
+                  <label for="cert-date">Tanggal Terbit</label>
+                  <input type="date" id="cert-date">
+                  <small>Format YYYY-MM-DD, ditampilkan sebagai tanggal.</small>
+                </div>
+
+                <div class="field">
+                  <label for="cert-cred">Credential ID</label>
+                  <input type="text" id="cert-cred" placeholder="ALM-COURSE_3825456">
+                </div>
+
+                <div class="field">
+                  <label>Status</label>
+                  <div class="switch-group">
+                    <input type="radio" name="cert-status" id="cert-status-draft" value="draft" checked>
+                    <label for="cert-status-draft">Draft</label>
+                    <input type="radio" name="cert-status" id="cert-status-published" value="published">
+                    <label for="cert-status-published">Published</label>
+                  </div>
+                  <small>Draft tidak tampil di website publik.</small>
+                </div>
+
+                <div class="field full">
+                  <label for="cert-url">Link Sertifikat</label>
+                  <input type="url" id="cert-url" placeholder="https://...">
+                  <small>
+                    Tempel link verifikasi / sertifikat digital (mis. IBM SkillsBuild,
+                    Credly, atau Google). Kosongkan kalau sertifikatnya belum punya
+                    link publik — kartu tetap tampil tanpa tombol.
+                  </small>
+                </div>
+
+              </div>
+
+              <div class="btn-row" style="margin-top:24px">
+                <button type="submit" class="btn btn-primary btn-ico-only" id="saveCertBtn" title="Simpan Sertifikat"><span class="btn-ico" aria-hidden="true">&#128190;</span><span class="sr-only">Simpan Sertifikat</span></button>
+                <a class="btn btn-outline" href="#/certifications">Batal</a>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="panel" id="certListPanel">
+            <div class="panel-head">
+              <h2>Daftar Sertifikat</h2>
+              <div class="btn-row">
+                <button type="button" class="btn btn-outline btn-sm" id="seedCertsBtn">Isi 6 sertifikat awal</button>
+                <a class="btn btn-outline btn-sm" href="../index.html#certifications" target="_blank" rel="noopener">Lihat halaman publik</a>
+                <a class="btn btn-primary btn-sm btn-ico-only" href="#/certifications/new" title="Tambah Sertifikat"><span class="btn-ico" aria-hidden="true">&#10133;</span><span class="sr-only">Tambah Sertifikat</span></a>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Sertifikat</th><th>Penerbit</th><th>Tanggal</th>
+                    <th>Status</th><th>Urutan</th><th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="certBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- ========== SETTINGS ========== -->
+        <section class="view" id="view-settings">
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Informasi Portfolio</h2>
+              <button type="submit" form="settingsForm" class="btn btn-primary btn-sm btn-ico-only" title="Simpan Perubahan"><span class="btn-ico" aria-hidden="true">&#128190;</span><span class="sr-only">Simpan Perubahan</span></button>
+            </div>
+
+            <form id="settingsForm" novalidate>
+              <div class="form-grid">
+
+                <div class="field">
+                  <label for="c-name">Nama</label>
+                  <input type="text" id="c-name">
+                </div>
+
+                <div class="field">
+                  <label for="c-tagline">Tagline</label>
+                  <input type="text" id="c-tagline">
+                </div>
+
+                <div class="field full">
+                  <label for="c-heroTitle">Hero Title</label>
+                  <input type="text" id="c-heroTitle">
+                  <small>Teks di antara tanda * akan jadi warna biru. Contoh: Building systems with *electronics* and code.</small>
+                </div>
+
+                <div class="field full">
+                  <label for="c-heroDescription">Hero Description</label>
+                  <textarea id="c-heroDescription"></textarea>
+                </div>
+
+                <div class="field full">
+                  <label for="c-aboutTitle">About Title</label>
+                  <input type="text" id="c-aboutTitle">
+                </div>
+
+                <div class="field full">
+                  <label for="c-about">Teks About</label>
+                  <textarea id="c-about" placeholder="Satu paragraf per baris kosong"></textarea>
+                </div>
+
+                <div class="field">
+                  <label for="c-education">Pendidikan</label>
+                  <input type="text" id="c-education">
+                </div>
+
+                <div class="field">
+                  <label for="c-focus">Fokus</label>
+                  <input type="text" id="c-focus">
+                </div>
+
+                <div class="field">
+                  <label for="c-location">Lokasi</label>
+                  <input type="text" id="c-location">
+                </div>
+
+                <div class="field full">
+                  <label>Foto Profil (URL)</label>
+                  <input type="url" id="c-profileImage"
+                         placeholder="https://raw.githubusercontent.com/... atau assets/img/profile.jpg">
+                  <small>
+                    Boleh link gambar (mis. <code>raw.githubusercontent.com</code>) atau path
+                    gambar di repository. Kalau dikosongkan, section Profil menampilkan inisial.
+                  </small>
+                </div>
+
+                <div class="field">
+                  <label for="c-email">Email</label>
+                  <input type="email" id="c-email" placeholder="emailkamu@gmail.com">
+                </div>
+
+                <div class="field">
+                  <label for="c-phone">Telepon / WhatsApp</label>
+                  <input type="tel" id="c-phone" placeholder="+62-812-3456-7890">
+                </div>
+
+                <div class="field">
+                  <label for="c-github">GitHub URL</label>
+                  <input type="url" id="c-github" placeholder="https://github.com/username">
+                </div>
+
+                <div class="field">
+                  <label for="c-linkedin">LinkedIn URL</label>
+                  <input type="url" id="c-linkedin" placeholder="https://linkedin.com/in/username">
+                </div>
+
+                <div class="field">
+                  <label for="c-instagram">Instagram URL</label>
+                  <input type="url" id="c-instagram" placeholder="https://instagram.com/username">
+                </div>
+
+                <div class="field full">
+                  <label for="c-footerText">Teks Footer</label>
+                  <input type="text" id="c-footerText">
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2>Akun Admin</h2>
+            <p class="hint" id="accountInfo">-</p>
+            <p class="hint" style="margin-top:10px">
+              Email admin diatur di <code>js/site-config.js</code> (bagian
+              <code>firebase.adminEmails</code>) dan di security rules
+              <code>firestore.rules</code> / <code>storage.rules</code>.
+            </p>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+  <script>window.UI_NO_BOOT = true;</script>
+  <script src="../js/site-config.js"></script>
+  <script src="../js/seed-data.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="admin.js"></script>
+
+</body>
+</html>
