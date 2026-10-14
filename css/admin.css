@@ -1,0 +1,1197 @@
+/* =========================================================
+   ADMIN DASHBOARD STYLES
+   ========================================================= */
+
+:root {
+  --admin-panel-2: #0d2133;
+}
+
+body.admin {
+  min-height: 100vh;
+
+  background: var(--bg);
+
+  color: var(--text);
+
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+
+/* =========================================================
+   ATURAN WAJIB
+
+   Atribut hidden harus SELALU menang atas display dari class.
+   Tanpa aturan ini, .admin-loader (display:grid) dan
+   .admin-shell (display:grid) tetap terlihat walau atribut
+   hidden sudah dipasang -> "Memuat dashboard..." tidak hilang.
+   ========================================================= */
+
+[hidden] {
+  display: none !important;
+}
+
+/* LOADER */
+
+.admin-loader {
+  min-height: 100vh;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+
+/* FATAL / SETUP NOTICE */
+
+.fatal {
+  max-width: 640px;
+
+  margin: 80px auto;
+  padding: 34px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: var(--card);
+
+  text-align: center;
+}
+
+.fatal h1 {
+  margin-bottom: 12px;
+
+  font-size: 24px;
+}
+
+.fatal p {
+  margin-bottom: 14px;
+
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.fatal code {
+  display: inline-block;
+  margin-top: 8px;
+
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  background: rgba(90, 169, 255, .1);
+  color: var(--blue-light);
+
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+}
+
+
+/* SHELL */
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+
+  min-height: 100vh;
+}
+
+/* Sidebar menempel di kiri: tidak ikut naik saat halaman di-scroll.
+   align-self: start + height 100vh supaya panelnya setinggi layar
+   daninstead ikut memanjang mengikuti isi konten. */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  max-height: 100vh;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  padding: 26px 18px;
+
+  border-right: 1px solid var(--border);
+
+  background: var(--card);
+}
+
+/* scrollbar tipis supaya tidak mengganggu */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+
+  background: #1b3a5c;
+}
+
+.side-brand {
+  margin-bottom: 30px;
+
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.side-brand span {
+  color: var(--blue);
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  margin-bottom: auto;
+}
+
+.side-nav a,
+.side-foot button,
+.side-foot a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px 13px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: none;
+
+  color: var(--text-soft);
+
+  font-family: inherit;
+  font-size: 13.5px;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: .18s ease;
+}
+
+.side-nav a:hover,
+.side-foot a:hover,
+.side-foot button:hover {
+  background: rgba(90, 169, 255, .08);
+  color: white;
+}
+
+.side-nav a.active {
+  background: rgba(90, 169, 255, .14);
+  color: var(--blue-light);
+  font-weight: 700;
+}
+
+.side-foot {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid var(--border);
+}
+
+.side-foot button {
+  color: #e08a8a;
+}
+
+.admin-main {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 20px 30px;
+
+  border-bottom: 1px solid var(--border);
+
+  background: rgba(6, 15, 25, .9);
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.admin-top h1 {
+  font-size: 20px;
+  letter-spacing: -.02em;
+}
+
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.pill {
+  padding: 3px 9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.pill-warn {
+  border: 1px solid #6b5326;
+  background: rgba(231, 189, 93, .14);
+  color: #e7bd5d;
+}
+
+#storageHint {
+  margin-bottom: 10px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #6b5326;
+  border-radius: 9px;
+
+  background: rgba(231, 189, 93, .1);
+
+  color: #e7bd5d;
+}
+
+#storageHint strong {
+  color: #f0cd85;
+}
+
+.admin-content {
+  padding: 30px;
+}
+
+
+/* VIEWS */
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.alert {
+  padding: 15px 18px;
+
+  border-radius: 12px;
+
+  margin-bottom: 20px;
+
+  font-size: 13px;
+}
+
+.alert code {
+  padding: 2px 6px;
+
+  border-radius: 5px;
+
+  background: rgba(0, 0, 0, .25);
+
+  font-size: 11.5px;
+}
+
+.alert .hint {
+  margin-top: 8px;
+}
+
+.alert-error {
+  border: 1px solid #7a3434;
+  background: rgba(180, 60, 60, .14);
+
+  color: #f3b4b4;
+}
+
+.alert-error strong {
+  color: #ffd0d0;
+}
+
+
+/* STAT CARDS */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  padding: 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+
+  /* Kartu statistik rata tengah: label dan angkanya sama lurus,
+     sama seperti header dan isi tabel. */
+  text-align: center;
+}
+
+.stat-card span {
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+
+  text-align: center;
+}
+
+.stat-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  font-size: 30px;
+  letter-spacing: -.03em;
+
+  text-align: center;
+}
+
+.panel {
+  padding: 24px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+
+  margin-bottom: 20px;
+}
+
+.panel h2 {
+  margin-bottom: 16px;
+
+  font-size: 15px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.panel-head h2 {
+  margin: 0;
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+
+
+/* BUTTONS */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 40px;
+
+  padding: 0 16px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .18s ease;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #04101b;
+}
+
+.btn-primary:hover { background: var(--blue-light); }
+
+.btn-outline {
+  border-color: var(--border-light);
+  background: none;
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .08);
+}
+
+.btn-danger {
+  border-color: #6b2f2f;
+  background: rgba(180, 60, 60, .12);
+  color: #f0a3a3;
+}
+
+.btn-danger:hover { background: rgba(180, 60, 60, .22); }
+
+.btn-sm {
+  min-height: 32px;
+  padding: 0 11px;
+  font-size: 11.5px;
+}
+
+.btn[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+/* BUTTON CRUD BERBASIS IKON
+   Tombol Edit / Tambah / Simpan / Hapus memakai karakter Unicode,
+   bukan tulisan. Label aslinya tetap ada di title (tooltip mouse) dan
+   di .sr-only (dibaca screen reader), jadi tidak ada informasi yang hilang. */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.btn-ico {
+  font-size: 15px;
+  line-height: 1;
+  pointer-events: none;
+  /* Minta versi simbol (monokrom) kalau browser mendukung; browser
+     lama tetap menampilkan emoji berwarna. */
+  font-variant-emoji: text;
+}
+
+.btn-sm .btn-ico {
+  font-size: 13px;
+}
+
+/* Tombol yang isinya cuma ikon: lebar tetap satu tombol, jadi rata. */
+.btn-ico-only {
+  min-width: 40px;
+  padding: 0;
+  gap: 0;
+}
+
+.btn-sm.btn-ico-only {
+  min-width: 32px;
+}
+
+/* Status "sedang menyimpan": tombol nonaktif tapi cursor tetap
+   menunjukkan proses, bukan "klik disabled". */
+.btn.is-busy {
+  cursor: progress;
+}
+
+
+/* TABLE */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  font-size: 13px;
+}
+
+.data-table th {
+  padding: 10px 12px;
+
+  border-bottom: 1px solid var(--border);
+
+  color: var(--text-muted);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+
+  /* Header rata tengah supaya sejajar di atas kolomnya. */
+  text-align: center;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 13px 12px;
+
+  border-bottom: 1px solid rgba(25, 54, 79, .55);
+
+  vertical-align: middle;
+
+  /* Isi tabel rata tengah, mengikuti headernya. */
+  text-align: center;
+}
+
+/* Kolom pertama (Project / Sertifikat) tetap rata kiri: isinya
+   thumbnail + judul yang panjang, jadi kiri jauh lebih enak dibaca. */
+.data-table td:first-child {
+  text-align: left;
+}
+
+/* Pesan "belum ada data" bukan daftar data -> tetap rata kiri. */
+.data-table td.hint {
+  text-align: left;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Kolom Aksi jangan ikut menyempit: tombolnya harus tetap muat satu
+   baris. Kalau layar sempit, .table-wrap yang discroll horizontal. */
+.data-table th:last-child,
+.data-table td:last-child {
+  white-space: nowrap;
+}
+
+.cell-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Kolom Status sertifikat: badge di atas, ikon link verifikasi di
+   bawahnya, dua-duanya rata tengah. */
+.cert-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.cert-status .badge {
+  display: inline-block;
+}
+
+.cell-thumb {
+  width: 52px;
+  height: 38px;
+
+  flex: none;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  background: var(--admin-panel-2);
+
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.cell-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cell-title strong {
+  display: block;
+  font-size: 13.5px;
+}
+
+.cell-title small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Kolom Aksi: semua tombol aksi (panah urutan + ikon CRUD) satu gaya,
+   satu ukuran, dan SELALU satu baris. Kalau tidak muat, tabel yang
+   discroll (lihat .table-wrap), bukan tombol yang turun ke baris
+   kedua — tombol yang turun baris bikin painfully jauh di mata. */
+.row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+/* Urutan manual project: panah atas/bawah + nomor posisi */
+.order-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.btn-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #3a4f63;
+  border-radius: 6px;
+
+  background: #0d1b28;
+
+  color: #9fb2c5;
+
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: .15s ease;
+}
+
+/* Ikon CRUD di dalam tombol aksi dibesarkan sedikit supaya setinggi
+   panah ▲ ▼, bukan jadi gambar kecil di kotak besar. */
+.btn-icon .btn-ico {
+  font-size: 13px;
+}
+
+.btn-icon:hover:not([disabled]) {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .12);
+  color: var(--blue);
+}
+
+/* Tombol hapus: warna merah, sama sized dengan yang lain. */
+.btn-icon-danger {
+  border-color: #6b2f2f;
+  background: rgba(180, 60, 60, .12);
+  color: #f0a3a3;
+}
+
+.btn-icon-danger:hover:not([disabled]) {
+  border-color: #f0a3a3;
+  background: rgba(180, 60, 60, .22);
+  color: #ffd7d7;
+}
+
+.btn-icon[disabled] {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.order-pos {
+  min-width: 22px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+
+  text-align: center;
+}
+
+
+
+/* FORMS */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.field small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="url"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #071624;
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 13.5px;
+
+  /* Widget bawaan browser (kalendar date picker, dropdown select)
+     ikut tema gelap, kalau tidak ikonnya hitam di atas background
+     gelap dan praktis tidak kelihatan. */
+  color-scheme: dark;
+
+  transition: .18s ease;
+}
+
+/* Ikon kalender di kolom tanggal sertifikat */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: .6;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(90, 169, 255, .1);
+}
+
+input[type="file"] {
+  width: 100%;
+
+  padding: 10px;
+
+  border: 1px dashed var(--border-light);
+  border-radius: 9px;
+
+  background: #071624;
+  color: var(--text-soft);
+  font-size: 12.5px;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 12px;
+
+  padding: 7px 12px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: rgba(90, 169, 255, .16);
+  color: var(--blue-light);
+
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--text-soft);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--blue);
+}
+
+.switch-group {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.switch-group input { display: none; }
+
+.switch-group label {
+  padding: 8px 15px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  color: var(--text-muted);
+
+  font-size: 12.5px;
+
+  cursor: pointer;
+
+  transition: .18s ease;
+}
+
+.switch-group input:checked + label {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .14);
+  color: var(--blue-light);
+  font-weight: 700;
+}
+
+
+/* IMAGE PREVIEW + GALLERY */
+
+.cover-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cover-thumb {
+  width: 116px;
+  height: 82px;
+
+  flex: none;
+
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  background: var(--admin-panel-2);
+
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.cover-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.thumb-list figure {
+  position: relative;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  overflow: hidden;
+
+  background: var(--admin-panel-2);
+}
+
+.thumb-list img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+
+  display: block;
+}
+
+.thumb-list button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+
+  width: 24px;
+  height: 24px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: rgba(2, 7, 12, .8);
+
+  color: #f0a3a3;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+/* LINK REPEATER */
+
+.link-rows {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.link-row {
+  display: grid;
+  grid-template-columns: 170px 1fr 1.4fr 36px;
+
+  gap: 9px;
+
+  align-items: center;
+}
+
+.link-row .remove {
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #6b2f2f;
+  border-radius: 8px;
+
+  background: rgba(180, 60, 60, .1);
+
+  color: #f0a3a3;
+
+  cursor: pointer;
+}
+
+.link-row .remove:hover {
+  background: rgba(180, 60, 60, .22);
+}
+
+
+/* SKILL ITEM */
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1.6fr auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.skill-row .icon-input {
+  text-align: center;
+}
+
+
+/* LOGIN */
+
+body.login-page {
+  min-height: 100vh;
+
+  display: grid;
+  place-items: center;
+
+  padding: 24px;
+
+  background:
+    radial-gradient(circle at 70% 10%, rgba(22, 117, 200, .16), transparent 35%),
+    var(--bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 36px 32px;
+
+  border: 1px solid var(--border);
+  border-radius: 18px;
+
+  background: var(--card);
+
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .45);
+}
+
+.login-card .logo {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.login-card .logo span {
+  color: var(--blue);
+}
+
+.login-card h1 {
+  margin-bottom: 6px;
+
+  font-size: 22px;
+}
+
+.login-card .sub {
+  margin-bottom: 26px;
+
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.login-card .field {
+  margin-bottom: 15px;
+}
+
+.login-card .btn {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.form-error {
+  display: none;
+
+  margin-bottom: 15px;
+
+  padding: 11px 13px;
+
+  border: 1px solid #6b2f2f;
+  border-radius: 9px;
+
+  background: rgba(180, 60, 60, .12);
+
+  color: #f0a3a3;
+
+  font-size: 12.5px;
+}
+
+.form-error.show {
+  display: block;
+}
+
+.login-foot {
+  margin-top: 22px;
+
+  color: var(--text-muted);
+  font-size: 12px;
+
+  text-align: center;
+}
+
+.login-foot a {
+  color: var(--blue);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .skill-row { grid-template-columns: 50px 1fr; }
+}
+
+/* Sidebar menjadi bar horizontal di HP: jadi tidak lagi setinggi layar. */
+@media (max-width: 760px) {
+  .admin-shell { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+
+    height: auto;
+    max-height: none;
+
+    overflow: visible;
+
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    overflow-x: auto;
+
+    padding: 12px 16px;
+
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .side-brand { margin-bottom: 0; }
+
+  .side-nav {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .side-nav a { padding: 8px 11px; white-space: nowrap; }
+
+  .side-foot {
+    flex-direction: row;
+
+    margin-left: auto;
+
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .side-foot a, .side-foot button { padding: 8px 11px; }
+
+  .admin-content { padding: 20px 16px; }
+  .admin-top { padding: 16px; }
+
+  .link-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

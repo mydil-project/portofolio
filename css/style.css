@@ -1,0 +1,2388 @@
+/* =========================================================
+   AIDIL FEBRIAN PORTFOLIO
+   HTML + CSS ONLY
+   ========================================================= */
+
+:root {
+  --bg: #050d16;
+  --bg-soft: #081522;
+  --card: #091927;
+  --card-hover: #0b2032;
+
+  --border: #19364f;
+  --border-light: #244b6a;
+
+  --text: #edf5fc;
+  --text-soft: #9fb2c5;
+  --text-muted: #71869a;
+
+  --blue: #5aa9ff;
+  --blue-light: #81c2ff;
+
+  --max-width: 1180px;
+}
+
+
+/* RESET */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Atribut hidden harus menang atas display dari class mana pun */
+[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   NAVIGASI ANCHOR DI BAWAH NAVBAR STICKY
+   ---------------------------------------------------------
+   Menu header hanya anchor biasa (#skills, #projects, ...).
+   Saat diklik, browser menggulir section itu ke atas viewport —
+   TAPI navbar 72px masih menempel di atas, jadi judul section
+   akan tertutup header.
+
+   Dipakai PADA SCROLL CONTAINER (html), bukan pada target.
+   Kalau offset diletakkan pada [id] lewat scroll-margin-top
+   DAN di sini, browser menjumlahkannya jadi ~184px dan judul
+   section muncul jauh di bawah navbar dengan ruang kosong besar.
+
+   Nilainya tidak boleh lebih kecil dari tinggi navbar (72px),
+   kalau tidak judul section tertutup header saat anchor diklik.
+   Ditambah 4px saja supaya tidak menempel.
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 74px;
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at 70% 5%,
+      rgba(22, 117, 200, .10),
+      transparent 28%
+    ),
+    var(--bg);
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* CONTAINER */
+
+.section-container {
+  width: min(var(--max-width), 92%);
+  margin: auto;
+}
+
+/* Jarak atas section. Berpisah dari bawah karena keduanya punya
+   fungsi berbeda:
+
+     atas  -> ruang kosong yang terlihat setelah menu diklik.
+              Section berhenti tepat di bawah navbar (scroll-padding-top),
+              lalu judul baru muncul. Nilai besar bikin judul
+              terdorong jauh dari header.
+     bawah -> jarak antar isi section yang sedang digulir.
+              Tidak terlihat sebagai "ruang di bawah menu". */
+.section {
+  padding: 30px 0 44px;
+}
+
+
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  height: 72px;
+
+  padding: 0 4%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(25, 54, 79, .8);
+
+  background: rgba(5, 13, 22, .82);
+
+  backdrop-filter: blur(16px);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 32px;
+
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .10em;
+}
+
+.logo span {
+  color: var(--blue);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+
+  /* Jarak antar item menu. Ada 7 item di sini (Home..Contact)
+     plus tombol GitHub, jadi selisih kecil sangat terasa. */
+  gap: 15px;
+}
+
+.nav-menu a {
+  color: var(--text-soft);
+  font-size: 13px;
+  transition: .2s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: white;
+}
+
+.github-btn {
+  padding: 7px 14px;
+
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+
+  color: white;
+  font-size: 13px;
+
+  transition: .2s ease;
+}
+
+.github-btn:hover {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .08);
+}
+
+
+/* HERO */
+
+.hero {
+  min-height: 540px;
+
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+
+  align-items: center;
+
+  gap: 36px;
+
+  position: relative;
+}
+
+.eyebrow {
+  color: var(--blue);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .18em;
+
+  margin-bottom: 10px;
+}
+
+/* Pemisah "x" di eyebrow. #47799f hanya 4.19:1 di latar gelap —
+   di bawah ambang 4.5. #5a8ab5 mencapai 5.4:1. */
+.eyebrow span {
+  color: #5a8ab5;
+}
+
+.hero h1 {
+  max-width: 760px;
+
+  font-size: clamp(48px, 6vw, 76px);
+
+  line-height: 1.02;
+
+  letter-spacing: -.045em;
+
+  margin-bottom: 18px;
+}
+
+.hero h1 span {
+  color: var(--blue);
+}
+
+.hero-description {
+  max-width: 620px;
+
+  color: var(--text-soft);
+
+  font-size: 15.5px;
+
+  line-height: 1.7;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+
+  padding: 0 18px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  transition: .2s ease;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #04101b;
+
+  box-shadow: 0 10px 35px rgba(90, 169, 255, .18);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  background: var(--blue-light);
+}
+
+.btn-outline {
+  border: 1px solid var(--border-light);
+
+  color: white;
+
+  background: rgba(255,255,255,.01);
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .07);
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-top: 18px;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 30px;
+}
+
+.social-links a:hover {
+  color: var(--blue);
+}
+
+
+/* HERO VISUAL */
+
+.hero-visual {
+  min-height: 340px;
+
+  display: grid;
+  place-items: center;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  filter: blur(80px);
+
+  opacity: .23;
+}
+
+.glow-one {
+  background: #087de1;
+  top: 30px;
+  left: 50px;
+}
+
+.glow-two {
+  background: #1b4f91;
+  right: 20px;
+  bottom: 20px;
+}
+
+.tech-card {
+  position: relative;
+
+  width: 280px;
+  min-height: 215px;
+
+  padding: 22px;
+
+  border: 1px solid #24547a;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 40, 62, .96),
+      rgba(6, 18, 30, .96)
+    );
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.45),
+    inset 0 1px rgba(255,255,255,.04);
+}
+
+.tech-card-top {
+  display: flex;
+  gap: 6px;
+
+  margin-bottom: 18px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+}
+
+.red {
+  background: #ef6868;
+}
+
+.yellow {
+  background: #e7bd5d;
+}
+
+.green {
+  background: #60c98b;
+}
+
+.code-symbol {
+  color: var(--blue);
+
+  font-size: 32px;
+
+  margin-bottom: 5px;
+}
+
+.tech-word {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 22px;
+  font-weight: 900;
+
+  letter-spacing: .09em;
+}
+
+.tech-word span:nth-child(2) {
+  color: var(--blue);
+}
+
+.terminal-line {
+  margin-top: 14px;
+
+  color: #7191aa;
+
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.terminal-line span {
+  color: #63b0ff;
+}
+
+.circuit {
+  position: absolute;
+
+  border-top: 1px solid rgba(90, 169, 255, .35);
+  border-right: 1px solid rgba(90, 169, 255, .35);
+
+  opacity: .65;
+}
+
+.circuit-one {
+  width: 120px;
+  height: 80px;
+
+  top: 70px;
+  left: 15px;
+}
+
+.circuit-two {
+  width: 90px;
+  height: 110px;
+
+  bottom: 30px;
+  right: 10px;
+}
+
+.circuit-three {
+  width: 50px;
+  height: 40px;
+
+  top: 30px;
+  right: 50px;
+}
+
+
+/* SECTION HEADING */
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.section-heading h2,
+.about-content h2,
+.contact-section h2 {
+  font-size: 33px;
+
+  line-height: 1.1;
+
+  letter-spacing: -.035em;
+}
+
+.simple-heading {
+  margin-bottom: 22px;
+}
+
+
+/* PROJECTS */
+
+.project-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+}
+
+.project-card {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--card);
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+
+  border-color: #356d9b;
+
+  background: var(--card-hover);
+}
+
+.project-image {
+  height: 160px;
+
+  display: grid;
+  place-items: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-bottom: 1px solid var(--border);
+}
+
+/* Catatan: blok gradien per-project yang dulu ada di sini sudah dihapus.
+   Semua kartu memakai .image-placeholder atau cover image dari database,
+   jadi tidak ada elemen yang butuh variasi warna per project. */
+
+.image-placeholder {
+  width: 115px;
+  height: 115px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(130, 205, 255, .35);
+
+  border-radius: 20px;
+
+  background: rgba(4, 15, 25, .55);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+
+  color: #8bcaff;
+
+  font-weight: 900;
+
+  letter-spacing: .12em;
+}
+
+.project-body {
+  padding: 15px;
+}
+
+.project-category {
+  color: var(--blue);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: .13em;
+
+  margin-bottom: 6px;
+}
+
+.project-body h3 {
+  font-size: 16px;
+
+  line-height: 1.25;
+
+  margin-bottom: 6px;
+}
+
+.project-body p {
+  /* Tanpa min-height, kartu tanpa deskripsi akan terlihat "bolong"
+     dan tinggi kartu jadi tidak seragam. Baris tetap dikunci supaya
+     grid tetap rapi, tapi nilainya pendek. */
+  min-height: 40px;
+
+  color: var(--text-muted);
+
+  font-size: 12.5px;
+
+  line-height: 1.6;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin: 11px 0;
+}
+
+.tags span {
+  padding: 3px 7px;
+
+  border: 1px solid #21435e;
+
+  border-radius: 999px;
+
+  color: #8db4d4;
+
+  font-size: 9px;
+}
+
+.project-link {
+  display: inline-block;
+
+  margin-top: 2px;
+
+  color: var(--blue);
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.project-link:hover {
+  color: white;
+}
+
+
+/* ABOUT */
+
+/* Kata yang dibungkus <span> oleh data-highlight jadi biru.
+   Selector memakai .about-content (bukan kelas section) karena section
+   about tidak lagi punya kelas sendiri sejak semua halaman digabung. */
+.about-content h2 span {
+  color: var(--blue);
+}
+
+.about-content > p {
+  max-width: 650px;
+
+  margin-top: 18px;
+
+  color: var(--text-soft);
+
+  font-size: 15px;
+}
+
+.about-info {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--card);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  padding: 16px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item span {
+  color: var(--text-muted);
+
+  font-size: 10px;
+
+  letter-spacing: .13em;
+
+  font-weight: 800;
+}
+
+.info-item strong {
+  color: var(--text);
+
+  font-size: 13px;
+}
+
+
+/* SKILLS */
+
+.skills-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 14px;
+}
+
+.skill-card {
+  padding: 20px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--card);
+
+  transition: .2s ease;
+}
+
+.skill-card:hover {
+  border-color: var(--border-light);
+
+  transform: translateY(-3px);
+}
+
+.skill-icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 14px;
+
+  border: 1px solid #24506f;
+
+  border-radius: 10px;
+
+  color: var(--blue);
+
+  font-size: 17px;
+
+  background: #071725;
+}
+
+.skill-card h3 {
+  margin-bottom: 6px;
+
+  font-size: 15.5px;
+}
+
+.skill-card p {
+  color: var(--text-muted);
+
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+
+/* CONTACT */
+
+.contact-section {
+  min-height: 320px;
+
+  display: grid;
+  place-items: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(33, 111, 181, .15),
+      transparent 45%
+    ),
+    #06111d;
+}
+
+.contact-glow {
+  position: absolute;
+
+  width: 400px;
+  height: 400px;
+
+  border-radius: 50%;
+
+  background: #1675c8;
+
+  filter: blur(150px);
+
+  opacity: .12;
+}
+
+.contact-content {
+  position: relative;
+
+  width: min(700px, 90%);
+}
+
+.contact-content h2 {
+  font-size: clamp(34px, 4.4vw, 48px);
+
+  margin-bottom: 12px;
+}
+
+.contact-content p {
+  margin-bottom: 20px;
+
+  color: var(--text-soft);
+  font-size: 15px;
+}
+
+
+/* FOOTER */
+
+footer {
+  min-height: 66px;
+
+  /* padding bawah diberi lebih besar dari atas: footer adalah konten
+     paling akhir, sehingga scroll untuk #contact / #interest punya
+     ruang. Tanpa itu browser mentok di batas bawah halaman dan
+     section terakhir tidak pernah bisa naik ke bawah navbar. */
+  padding: 20px 4% 30vh;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+
+/* RESPONSIVE */
+
+/* Navbar makin rapat sebelum menyerah jadi menu hamburger di 850px,
+   supaya 7 menu + tombol GitHub tidak pernah menabrak logo. */
+@media (max-width: 1150px) {
+
+  .nav-menu {
+    gap: 11px;
+  }
+
+  .nav-menu a {
+    font-size: 12.5px;
+  }
+
+  .navbar {
+    padding: 0 3%;
+  }
+
+}
+
+@media (max-width: 1050px) {
+
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skills-grid,
+  .cert-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .nav-menu {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .hero-visual {
+    min-height: 280px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .section {
+    padding: 24px 0 36px;
+  }
+
+  .github-btn {
+    display: none;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .hero-description {
+    font-size: 14.5px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  /* Sosial link jadi dua baris supaya tidak berdesakan di 390px */
+  .social-links {
+    gap: 4px 14px;
+  }
+
+  .project-grid,
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: start;
+
+    flex-direction: column;
+  }
+
+  .heading-note {
+    max-width: none;
+
+    text-align: left;
+  }
+
+  .section-heading h2,
+  .about-content h2 {
+    font-size: 27px;
+  }
+
+  footer {
+    flex-direction: column;
+
+    text-align: center;
+
+    padding-bottom: 18vh;
+  }
+
+}
+
+
+/* =========================================================
+   TAMBAHAN — halaman dalam, filter, detail, utilitas
+   ========================================================= */
+
+/* NAVBAR MOBILE */
+
+.nav-toggle {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+
+  background: none;
+
+  color: var(--text);
+
+  cursor: pointer;
+}
+
+/* Link GitHub di dalam menu (hanya muncul di layar kecil,
+   karena tombol GitHub di header disembunyikan di sana) */
+.nav-github {
+  display: none !important;
+}
+
+
+/* CATATAN: [id] { scroll-margin-top } SENGAJA TIDAK DIADA di sini.
+   Offset anchor sudah ditangani html { scroll-padding-top }.
+   Kalau dua-duanya aktif, browser menjumlahkannya jadi ~184px
+   dan judul section terdorong jauh ke bawah navbar. */
+
+
+/* LINK YANG DATANYA BELUM DIISI */
+.is-unset,
+a[data-unset] {
+  opacity: .5;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+
+/* CATATAN DI KANAN JUDUL SECTION */
+
+.heading-note {
+  max-width: 280px;
+
+  color: var(--text-muted);
+
+  font-size: 12.5px;
+  text-align: right;
+}
+
+
+/* SUB-BLOCK: pengelompokan di dalam satu section
+   (mis. Skills > Engineering Background > Pendidikan) */
+
+.sub-block {
+  margin-top: 40px;
+
+  padding-top: 26px;
+
+  border-top: 1px solid var(--border);
+}
+
+.sub-block .section-heading {
+  margin-bottom: 18px;
+}
+
+.sub-block .section-heading h3 {
+  font-size: 20px;
+
+  letter-spacing: -.02em;
+}
+
+.sub-block + .sub-block {
+  margin-top: 44px;
+}
+
+
+/* ABOUT SECTION */
+
+.about-profile {
+  display: grid;
+  grid-template-columns: .7fr 1.3fr;
+
+  align-items: start;
+
+  gap: 30px;
+}
+
+.portrait-frame {
+  aspect-ratio: 4 / 5;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(circle at 50% 35%, rgba(90, 169, 255, .18), transparent 60%),
+    linear-gradient(150deg, #0d2436, #071521);
+}
+
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.portrait-initials {
+  color: var(--blue);
+
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.about-text {
+  margin: 12px 0 16px;
+}
+
+.about-text p {
+  margin-top: 10px;
+
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.about-info.flat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.about-info.flat .info-item {
+  padding: 13px 15px;
+}
+
+
+/* TIMELINE */
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 14px;
+}
+
+.timeline {
+  padding: 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+}
+
+.timeline-title {
+  margin-bottom: 16px;
+
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+
+  color: var(--blue);
+}
+
+.timeline-item {
+  position: relative;
+
+  padding-left: 22px;
+  padding-bottom: 18px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+
+  left: 4px;
+  top: 12px;
+  bottom: -4px;
+
+  width: 1px;
+
+  background: var(--border-light);
+}
+
+.timeline-item:last-child::before {
+  display: none;
+}
+
+.timeline-marker {
+  position: absolute;
+
+  left: 0;
+  top: 5px;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+
+  background: var(--bg);
+}
+
+.timeline-year {
+  color: var(--blue);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.timeline-body h4 {
+  margin: 5px 0 3px;
+
+  font-size: 14px;
+}
+
+.timeline-body p {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+
+/* INTEREST CHIPS */
+
+.interest-grid {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.interest-grid .chip {
+  padding: 7px 13px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--card);
+
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+.interest-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+
+.interest-block + .interest-block {
+  margin-top: 20px;
+}
+
+
+/* KONTAK (dari CV) */
+
+.contact-list {
+  display: grid;
+
+  gap: 7px;
+
+  margin-top: 16px;
+}
+
+.contact-list > * {
+  display: flex;
+  align-items: baseline;
+
+  gap: 12px;
+}
+
+.contact-list .label {
+  min-width: 92px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+
+.contact-list a,
+.contact-list .value {
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+.contact-list a:hover {
+  color: var(--blue);
+}
+
+
+/* DAFTAR SKILL (dari CV) */
+
+.skill-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+}
+
+.skill-col {
+  padding: 18px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+}
+
+.skill-col-head {
+  display: flex;
+  align-items: baseline;
+
+  gap: 9px;
+
+  margin-bottom: 12px;
+}
+
+.skill-col-head span {
+  color: var(--blue);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.skill-col-head h3 {
+  font-size: 15px;
+}
+
+.skill-col .chips {
+  gap: 6px;
+}
+
+.skill-col .chip {
+  background: var(--card);
+  color: var(--text-soft);
+}
+
+
+/* SERTIFIKASI (dari CV) */
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.cert-card {
+  padding: 15px 18px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+
+  transition: .2s ease;
+}
+
+.cert-card:hover {
+  border-color: var(--border-light);
+
+  transform: translateY(-3px);
+}
+
+.cert-issuer {
+  color: var(--blue);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.cert-card h3 {
+  margin: 6px 0 9px;
+
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.cert-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px 16px;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.cert-meta code {
+  color: var(--text-soft);
+  font-size: 11.5px;
+}
+
+.cert-link {
+  display: inline-block;
+
+  margin-top: 11px;
+
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+
+  text-decoration: none;
+}
+
+.cert-link:hover {
+  text-decoration: underline;
+}
+
+
+/* FILTER BAR */
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 11px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: var(--text-muted);
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.chip:hover {
+  border-color: var(--border-light);
+  color: var(--text);
+}
+
+.chip.active {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .12);
+
+  color: var(--blue-light);
+}
+
+.chip-count {
+  padding: 1px 6px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, .06);
+
+  font-size: 10px;
+}
+
+.select-control {
+  padding: 7px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  background: var(--card);
+
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 12.5px;
+
+  cursor: pointer;
+}
+
+.list-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 12px;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.project-grid.full {
+  grid-template-columns: 1fr;
+}
+
+
+/* PROJECT CARD (tambahan) */
+
+.project-card h3 a:hover {
+  color: var(--blue);
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform .4s ease;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.05);
+}
+
+.project-image .image-placeholder {
+  width: 92px;
+  height: 92px;
+
+  border-radius: 16px;
+
+  font-size: 26px;
+}
+
+.card-flag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  background: rgba(90, 169, 255, .16);
+
+  color: var(--blue-light);
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.project-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+.card-links {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-link {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  color: var(--text-muted);
+
+  transition: .2s ease;
+}
+
+.icon-link:hover {
+  border-color: var(--blue);
+  background: rgba(90, 169, 255, .1);
+  color: var(--blue);
+}
+
+.btn-sm {
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  font-size: 12px;
+}
+
+.hero-buttons.center {
+  justify-content: center;
+}
+
+.is-unset {
+  opacity: .45;
+  border-style: dashed;
+}
+
+
+/* PROJECT DETAIL */
+
+.detail-hero {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+
+  align-items: center;
+
+  gap: 28px;
+
+  margin-bottom: 30px;
+}
+
+.detail-cover {
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: var(--card);
+}
+
+.detail-cover img {
+  width: 100%;
+
+  display: block;
+}
+
+.image-placeholder.big {
+  width: 100%;
+  height: 320px;
+
+  border: none;
+  border-radius: 0;
+
+  background:
+    radial-gradient(circle at 50% 45%, rgba(90, 169, 255, .22), transparent 60%),
+    linear-gradient(150deg, #0d2436, #061019);
+}
+
+.image-placeholder.big span {
+  font-size: 54px;
+}
+
+.detail-intro h1 {
+  margin: 8px 0 10px;
+
+  font-size: clamp(26px, 3.4vw, 36px);
+
+  line-height: 1.08;
+
+  letter-spacing: -.035em;
+}
+
+.detail-lead {
+  color: var(--text-soft);
+  font-size: 14.5px;
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 16px;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1.6fr .8fr;
+
+  align-items: start;
+
+  gap: 26px;
+}
+
+.detail-block {
+  margin-bottom: 24px;
+}
+
+/* Pill hardware / software / technologies di detail project: mendatar,
+   sedikit lebih besar daripada tag kecil di hero. */
+.detail-block .tags {
+  gap: 7px;
+  margin: 0;
+}
+
+.detail-block .tags span {
+  padding: 5px 11px;
+
+  font-size: 11px;
+}
+
+.detail-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 11px;
+
+  font-size: 15.5px;
+}
+
+.detail-title svg {
+  color: var(--blue);
+}
+
+.detail-text p {
+  color: var(--text-soft);
+  font-size: 14.5px;
+}
+
+.feature-list {
+  display: grid;
+  gap: 7px;
+}
+
+.feature-list li {
+  position: relative;
+
+  padding-left: 20px;
+
+  color: var(--text-soft);
+  font-size: 13.5px;
+}
+
+.feature-list li::before {
+  content: "";
+
+  position: absolute;
+  left: 2px;
+  top: 9px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--blue);
+}
+
+.side-card {
+  padding: 17px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--card);
+
+  margin-bottom: 12px;
+}
+
+.side-title {
+  margin-bottom: 11px;
+
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+
+  color: var(--blue);
+}
+
+.side-text {
+  margin-bottom: 11px;
+
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 7px 0;
+
+  border-bottom: 1px dashed rgba(25, 54, 79, .8);
+
+  font-size: 13px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row span {
+  color: var(--text-muted);
+}
+
+.info-row strong {
+  text-align: right;
+  font-weight: 600;
+}
+
+.source-box {
+  padding: 17px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: linear-gradient(150deg, rgba(15, 40, 62, .9), rgba(6, 18, 30, .9));
+
+  margin-bottom: 12px;
+}
+
+.source-box h3 {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.source-url {
+  display: block;
+
+  margin-bottom: 12px;
+
+  overflow-wrap: anywhere;
+
+  color: var(--blue-light);
+
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11.5px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+
+  object-fit: cover;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  cursor: zoom-in;
+
+  transition: .2s ease;
+}
+
+.gallery-grid img:hover {
+  border-color: var(--blue);
+}
+
+.related-section {
+  padding-top: 22px;
+
+  border-top: 1px solid var(--border);
+}
+
+.related-section h2 {
+  font-size: 26px;
+}
+
+
+/* =========================================================
+   MODAL DETAIL PROJECT
+   ========================================================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+
+  z-index: 260;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: 28px 16px;
+
+  overflow-y: auto;
+
+  background: rgba(2, 7, 12, .82);
+
+  backdrop-filter: blur(6px);
+
+  opacity: 0;
+
+  transition: opacity .18s ease;
+}
+
+.modal.open {
+  opacity: 1;
+}
+
+.modal-panel {
+  position: relative;
+
+  width: min(940px, 100%);
+
+  margin: auto;
+
+  padding: 26px 24px 24px;
+
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+
+  background: var(--bg-soft);
+
+  transform: translateY(10px);
+
+  transition: transform .18s ease;
+}
+
+.modal.open .modal-panel {
+  transform: none;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  z-index: 2;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+
+  background: rgba(9, 25, 39, .92);
+
+  color: var(--text);
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.modal-close:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.modal .detail-hero {
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.modal .detail-layout {
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.modal .image-placeholder.big {
+  height: 220px;
+}
+
+.modal .related-section {
+  margin-top: 24px;
+  padding-top: 20px;
+}
+
+.modal .project-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 700px) {
+
+  .modal {
+    padding: 0;
+  }
+
+  .modal-panel {
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  .modal .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* LIGHTBOX */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+
+  z-index: 300;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(2, 7, 12, .94);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: .2s ease;
+}
+
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox img {
+  max-width: 88vw;
+  max-height: 82vh;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.lightbox button {
+  position: absolute;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: rgba(9, 25, 39, .9);
+
+  color: var(--text);
+
+  cursor: pointer;
+}
+
+.lightbox-close { top: 22px; right: 22px; }
+.lightbox-nav { top: 50%; margin-top: -22px; }
+.lightbox-nav.prev { left: 22px; }
+.lightbox-nav.next { right: 22px; }
+
+.lightbox-count {
+  position: absolute;
+  bottom: 24px;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+
+/* UTILITAS */
+
+.empty-state {
+  grid-column: 1 / -1;
+
+  padding: 44px 20px;
+
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 52px;
+  height: 52px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 12px;
+
+  background: rgba(90, 169, 255, .1);
+  color: var(--blue);
+}
+
+.empty-state h3 {
+  margin-bottom: 6px;
+  font-size: 17px;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.badge {
+  padding: 3px 9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.badge-published {
+  background: rgba(96, 201, 139, .14);
+  color: #6fd6a0;
+}
+
+.badge-draft {
+  background: rgba(231, 189, 93, .14);
+  color: #e7bd5d;
+}
+
+.skeleton .project-image,
+.sk-block {
+  background: linear-gradient(100deg, #0a1a28 30%, #0f2637 50%, #0a1a28 70%);
+  background-size: 200% 100%;
+
+  animation: shimmer 1.3s infinite linear;
+}
+
+.sk-line {
+  height: 11px;
+  margin-bottom: 9px;
+
+  border-radius: 5px;
+
+  background: linear-gradient(100deg, #0a1a28 30%, #0f2637 50%, #0a1a28 70%);
+  background-size: 200% 100%;
+
+  animation: shimmer 1.3s infinite linear;
+}
+
+.sk-line.lg { width: 60%; height: 18px; }
+.sk-line.sm { width: 40%; }
+.sk-block { height: 260px; border-radius: 14px; margin-bottom: 14px; }
+
+/* Kerangka saat detail project dimuat di dalam modal */
+.detail-skeleton {
+  padding: 4px 0;
+}
+
+.detail-skeleton .sk-block {
+  height: 220px;
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.footer-links {
+  display: flex;
+  gap: 14px;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 30px;
+}
+
+.footer-links a:hover {
+  color: var(--blue);
+}
+
+.demo-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+
+  z-index: 250;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 13px 17px;
+
+  border: 1px solid #3a4f63;
+  border-radius: 12px;
+
+  background: rgba(12, 26, 39, .96);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+
+  color: var(--text-soft);
+  font-size: 12.5px;
+}
+
+.demo-banner code {
+  color: var(--blue-light);
+}
+
+.demo-banner button {
+  border: none;
+  background: none;
+
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.toast-host {
+  position: fixed;
+  top: 86px;
+  right: 16px;
+
+  z-index: 400;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.toast {
+  min-width: 220px;
+  max-width: 340px;
+
+  padding: 13px 16px;
+
+  border: 1px solid var(--border-light);
+  border-radius: 11px;
+
+  background: rgba(11, 32, 50, .97);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .4);
+
+  color: var(--text);
+  font-size: 13px;
+
+  animation: toast-in .25s ease;
+}
+
+/* Warna toast sesuai jenis. Dipakai admin lewat UI.toast(pesan, "error")
+   dan "success" — kelasnya dirakit di JS, jadi tidak terlihat dari HTML. */
+.toast-success { border-color: #2f7d55; }
+.toast-error { border-color: #8b3a3a; }
+.toast.out { opacity: 0; transform: translateY(-6px); transition: .3s ease; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-10px); }
+}
+
+
+/* RESPONSIVE TAMBAHAN */
+
+@media (max-width: 900px) {
+
+  .detail-hero,
+  .detail-layout,
+  .about-profile,
+  .timeline-grid,
+  .skill-columns,
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-info.flat {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 850px) {
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+
+    /* Menu HP boleh panjang karena isinya sub-menu + cuplikan konten.
+       Tanpa batas tinggi, sub-menu membuat menu setinggi layar dan
+       menutupi seluruh isi halaman. */
+    max-height: calc(100vh - 72px);
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 0;
+
+    padding: 6px 4% 12px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: rgba(5, 13, 22, .985);
+
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  /* Jarak antar item di hamburger juga dirapatkan */
+  .nav-menu a {
+    padding: 7px 0;
+
+    border-bottom: 1px solid rgba(25, 54, 79, .5);
+  }
+
+  .nav-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .nav-github {
+    display: flex !important;
+
+    justify-content: space-between;
+
+    color: var(--blue) !important;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .filter-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .list-meta {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  /* Footer jadi dua baris supaya 7 link tidak berdesakan */
+  footer {
+    gap: 6px 16px;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+
+    gap: 0 14px;
+  }
+
+  .demo-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
